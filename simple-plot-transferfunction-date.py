@@ -30,7 +30,7 @@ def get_distance(directory) :
 
 def gain_vs_frequency(filename) :
     dat = np.loadtxt(fname=filename)
-    x = dat[:,0] / 1000 #create kHz
+    x = dat[:,0]
     y = dat[:,1]
     ylabel = "gain"
     return x, y, ylabel
@@ -76,7 +76,7 @@ for dir in sorted(glob.glob('2016-07-22-*-open')) :
     # set the title
     title = distance #TODO title finding
     # plot
-    ax.plot(freq, gain)
+    ax.plot(freq/1000, gain) #create kHz
     ax.set_title(title)
     ax.set_xlabel("frequency [kHz]")
     ax.set_ylabel(ylabel)
