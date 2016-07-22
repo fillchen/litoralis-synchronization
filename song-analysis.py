@@ -26,6 +26,7 @@ for dir in sorted(glob.glob('2016-07-21-*-meadow')) :
     dat = dir + '/stimulus-file-traces.dat'
 
     for info, key, data in dl.iload(dat) :
+        file = dir + '/info.dat'
         info = dl.load(file)[0]
         distancestr = info['Distance']
         conditionstr= info['Condition']
