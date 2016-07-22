@@ -30,7 +30,7 @@ def get_distance(directory) :
 
 def gain_vs_frequency(filename) :
     dat = np.loadtxt(fname=filename)
-    x = dat[:,0]
+    x = dat[:,0] / 1000 #create kHz
     y = dat[:,1]
     ylabel = "gain"
     return x, y, ylabel
@@ -52,17 +52,17 @@ def exclude_pure_distance_effects(gain, distance) :
 #os.chdir("/home/felicia/Dokumente/01 - Uni/01-SS16/Sensory Systems in Natural Environments/Data/DistanceMeadow/")
 
 # get reference recordings (distance 100cm)
-_ , reference_gain, _ = gain_vs_frequency('2016-07-21-aa-meadow/transferfunction-data.dat')
+_ , reference_gain, _ = gain_vs_frequency('2016-07-22-aa-open/transferfunction-data.dat')
 
 counter = 1
-for dir in sorted(glob.glob('2016-07-21-*-meadow')) :
+for dir in sorted(glob.glob('2016-07-22-*-open')) :
 
     # get path and general information
     file = dir + '/transferfunction-data.dat'
     distance = get_distance(dir)
 
     # construct subplot structure
-    ax = plt.subplot(3,4,counter) #TODO adapt
+    ax = plt.subplot(4,5,counter) #TODO adapt
 
     # values for frequency and gain (untransformed)
     freq, gain, ylabel = gain_vs_frequency(file)
@@ -74,21 +74,23 @@ for dir in sorted(glob.glob('2016-07-21-*-meadow')) :
     gain = np.log10(gain)
     ylabel = "log " + ylabel
     # set the title
-    title = dir #TODO title finding
-
+    title = distance #TODO title finding
     # plot
     ax.plot(freq, gain)
     ax.set_title(title)
-    ax.set_xlabel("frequency [Hz]")
+    ax.set_xlabel("frequency [kHz]")
     ax.set_ylabel(ylabel)
     # adapt the limits
-    ax.set_xlim(5000, 20000)
+    ax.set_xlim(5,20)
     ax.set_ylim(-3,0)
-
+    #plt.setp(ax,xticks=[6000,8000,10000,12000,14000,16000,18000,20000]) #simply to give info how to do ticks
+    #plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0)) #simply to give info how to force scientific notation
     # counter needed for handle the subplots
     counter = counter + 1
 
-# show all the plots
+# show all the plots, and make them pretty
+# this adjusts the plots in the figure window (Left/Bottom/Right/Top/WidthSpace/HeightSpace
+plt.subplots_adjust(.05,.05,.95,.95,.3, .55) 
 plt.show()
 
 #TODO : title, several graphs in one plot, beautify, rename
