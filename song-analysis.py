@@ -26,14 +26,14 @@ for dir in sorted(glob.glob('2016-07-21-*-meadow')) :
     dat = dir + '/stimulus-file-traces.dat'
 
     for info, key, data in dl.iload(dat) :
-        print data.shape
-        print info[0]['stimfile']
-        print key
+        info = dl.load(file)[0]
+        distancestr = info['Distance']
+        conditionstr= info['Condition']
         rate = np.round(1000.0/np.mean(np.diff(data[:,0])))
-    #    wave = data[:,1] - np.mean(data[:,1])
+    #   wave = data[:,1] - np.mean(data[:,1])
         wave = bandpass_filter(data[:,1] - np.mean(data[:,1]), rate)
         maxampl = np.max(np.abs(wave))
-        ai.write_audio(dir + '.wav', wave/maxampl, rate)
+        ai.write_audio(conditionstr+'_'+distancestr+'.wav', wave/maxampl, rate)
         plt.plot(wave/maxampl)
         plt.show()
         break
