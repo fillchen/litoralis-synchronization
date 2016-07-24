@@ -89,7 +89,7 @@ for dir in directories :
         
         # try stuff to make FFT
         ps = np.abs(np.fft.fft(wave))**2
-        time_step = 1 / 60 #is this right? 
+        time_step = np.mean(np.diff(time)) 
         freqs = np.fft.fftfreq(wave.size, time_step)
         freqs = np.abs(freqs)
         idx = np.argsort(freqs)
