@@ -32,7 +32,8 @@ def create_filename(directory, num=1) :
     info = dl.load(file)[0]
     distancestr = info['Distance']
     conditionstr= info['Condition']
-    return conditionstr+'_'+distancestr+'_'+str(num)
+    speciesName = 'Pholidoptera_littoralis_'
+    return speciesName+conditionstr+'_'+distancestr+'_'+str(num)
 
 def bandpass_filter(data, rate, lowf=2000.0, highf=20000.0):
     """
@@ -85,3 +86,12 @@ for dir in directories :
         #plt.show()
 
         counter = counter + 1
+        
+        # try stuff to make FFT
+        ps = np.abs(np.fft.fft(wave))**2
+        time_step = 1 / 60 #is this right? 
+        freqs = np.fft.fftfreq(wave.size, time_step)
+        freqs = np.abs(freqs)
+        idx = np.argsort(freqs)
+        plt.plot(freqs[idx], ps[idx])
+        plt.show()
